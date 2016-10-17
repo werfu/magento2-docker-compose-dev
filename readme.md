@@ -1,14 +1,15 @@
-# Magento 1.9 development Docker-compose scaffold
-This repo hold a docker-compose base configuration for Magento 1.9. It's based upon stock PHP-FPM, MySQL and Nginx image, and use minimal customization to these by using configuration injection. Only the FPM image is customized to install required PHP extensions. This is only for development purpose. It provide PHPMyAdmin and Mailcatcher as conveniance.  It's also unsafe, password are weaks and you will face problems if you try to use it in production. DO NO USE FOR LIVE SITE.
+# Magento 2 development Docker-compose scaffold
+This repo hold a docker-compose base configuration for Magento 2. It's based upon stock PHP-FPM, MySQL and Nginx image, and use minimal customization to these by using configuration injection. Only the FPM image is customized to install required PHP extensions. This is only for development purpose. It provide PHPMyAdmin and Mailcatcher as conveniance.  It's also unsafe, password are weaks and you will face problems if you try to use it in production. DO NO USE FOR LIVE SITE.
 
 ## Why use this instead of using (insert the of name your prefered Magento docker image here)
 Most Magento Docker image are monolytic or at most using an external MySQL server. This may be great if you don't need to tailor the configuration often or like to rebuild image, but I prefer to be able to tweak things easily while at the same time rely on the thinest images possible. As such, it's quite easy to switch images version, add Varnish or Pound support or add a Solar server, without having to customize a Dockerfile. Docker-compose is a simpler, more elegant solution. Use it!
 
 ## Features
 * Latest Nginx
-* MySQL 5.5
-* PHP-FPM 5.6 with the following extensions:
+* MySQL 5.7
+* PHP-FPM 7.0 with the following extensions:
 	* XDebug
+	* bc-math
 	* gd (with freetype and jpeg support)
 	* iconv
 	* mcrypt
