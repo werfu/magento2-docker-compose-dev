@@ -7,12 +7,26 @@ RUN apt-get update && apt-get install -y \
         libpng12-dev \
         libxml2-dev \
         libcurl4-openssl-dev \
-    && docker-php-ext-install -j$(nproc) bcmath iconv mcrypt curl dom hash pdo pdo_mysql simplexml xml soap \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) gd \
-    && pecl install redis-3.0.0 \
-    && pecl install xdebug \
-    && docker-php-ext-enable redis
+	libicu-dev \
+	libxslt-dev
+RUN docker-php-ext-install -j$(nproc) xsl 
+RUN docker-php-ext-install -j$(nproc) intl 
+RUN docker-php-ext-install -j$(nproc) zip 
+RUN docker-php-ext-install -j$(nproc) bcmath 
+RUN docker-php-ext-install -j$(nproc) iconv 
+RUN docker-php-ext-install -j$(nproc) mcrypt 
+RUN docker-php-ext-install -j$(nproc) curl 
+RUN docker-php-ext-install -j$(nproc) dom 
+RUN docker-php-ext-install -j$(nproc) hash 
+RUN docker-php-ext-install -j$(nproc) pdo pdo_mysql 
+RUN docker-php-ext-install -j$(nproc) simplexml 
+RUN docker-php-ext-install -j$(nproc) xml 
+RUN docker-php-ext-install -j$(nproc) soap
+RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+RUN docker-php-ext-install -j$(nproc) gd
+RUN pecl install redis-3.0.0
+RUN pecl install xdebug
+RUN docker-php-ext-enable redis
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ssmtp
 COPY ssmtp.conf /etc/ssmtp/ssmtp.conf
 COPY revaliases /etc/ssmtp/revaliases
