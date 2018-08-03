@@ -6,8 +6,8 @@ Most Magento Docker image are monolytic or at most using an external MySQL serve
 
 ## Features
 * Latest Nginx
-* MySQL 5.7
-* PHP-FPM 7.0 with the following extensions:
+* MariaDB 10
+* PHP-FPM 7.1 with the following extensions:
 	* XDebug
 	* bc-math
 	* gd (with freetype and jpeg support)
@@ -39,7 +39,9 @@ The MySQL database configuration are passed to the MySQL instance as environment
 ## Folder structure
 * www : Put your public Magento folder there. If you want your Magento site to be able to write to the folder, you'll have to ensure the group 33 is write-enabled (www-data on debian, http on arch) on the folder. New files will be created with the www-data user on the PHP-FPM machine.
 * db/init : Any scripts (SQL or sh) placed there will be ran on the first machine build. Usefull for importing a database
-* db/data : This is where the MySQL database are stored. You can copy your MySQL database straight there too (it might require some tweaks though, have a read at the MySQL docker image documentation).
+
+# Using Git Submodules
+The .gitmodules file is in .gitignore. As such, unless you personalize the configuration, you should be able to simply clone this repo, add your code repo as a submodule (the www folder), and still be able to pull update from this repo without a hitch.
 
 ## Configuration customization
 * Nginx default site configuration is exposed in conf/site.conf. The configuration is straightfowared, with basic rewrites and no security at all.
