@@ -1,10 +1,9 @@
-FROM php:7-fpm
+FROM php:7.1-fpm
 COPY customized.ini /usr/local/etc/php/conf.d/customized.ini
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
-        libpng12-dev \
         libxml2-dev \
         libcurl4-openssl-dev \
 	libicu-dev \
@@ -24,7 +23,7 @@ RUN docker-php-ext-install -j$(nproc) xml
 RUN docker-php-ext-install -j$(nproc) soap
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
 RUN docker-php-ext-install -j$(nproc) gd
-RUN pecl install redis-3.0.0
+RUN pecl install redis
 RUN pecl install xdebug
 RUN docker-php-ext-enable redis
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ssmtp
