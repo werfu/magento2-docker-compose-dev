@@ -3,7 +3,7 @@ services:
   db:
     image: mariadb:latest
     volumes:
-      - "./db/data:/var/lib/mysql"
+      - "/var/lib/mysql"
       - "./db/init:/docker-entrypoint-initdb.d"
     restart: always
     environment:
