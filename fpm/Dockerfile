@@ -7,7 +7,10 @@ RUN apt-get update && apt-get install -y \
         libxml2-dev \
         libcurl4-openssl-dev \
 	libicu-dev \
-	libxslt-dev
+	libxslt-dev \
+        curl \
+        git \
+        unzip
 RUN docker-php-ext-install -j$(nproc) xsl 
 RUN docker-php-ext-install -j$(nproc) intl 
 RUN docker-php-ext-install -j$(nproc) zip 
@@ -27,5 +30,7 @@ RUN pecl install redis
 RUN pecl install xdebug
 RUN docker-php-ext-enable redis
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ssmtp
+RUN php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');" && php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
 COPY ssmtp.conf /etc/ssmtp/ssmtp.conf
 COPY revaliases /etc/ssmtp/revaliases
+RUN chown www-data:www-data /var/www/html 
