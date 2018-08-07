@@ -30,6 +30,8 @@ services:
   fpm:
     depends_on:
       - mailcatcher
+      - db
+      - elasticsearch
     build: ./fpm
     restart: always
     ports: 
@@ -49,6 +51,7 @@ services:
       - db
       - redis
       - fpm
+      - elasticsearch
     ports:
       - "80:80"
       - "443:443"
@@ -65,3 +68,8 @@ services:
      - 8080:80
     volumes:
      - /sessions
+
+  elasticsearch:
+    image: elasticsearch
+    environment:
+      - discovery.type=single-node
