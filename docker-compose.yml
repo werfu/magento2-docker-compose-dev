@@ -33,9 +33,7 @@ services:
       - db
       - elasticsearch
     build: ./fpm
-    restart: always
-    ports: 
-      - "9000:9000"
+    restart: always 
     volumes:
       - "./www:/var/www/html"
   nginx:
