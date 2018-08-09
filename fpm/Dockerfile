@@ -33,4 +33,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ssmtp
 RUN php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');" && php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
 COPY ssmtp.conf /etc/ssmtp/ssmtp.conf
 COPY revaliases /etc/ssmtp/revaliases
-RUN chown www-data:www-data /var/www/html 
+RUN chown www-data:www-data /var/www/html
+RUN apt-get install -y mariadb-client
+RUN curl https://files.magerun.net/n98-magerun2.phar -o /usr/local/bin/n98-magerun2
+RUN chmod +x /usr/local/bin/n98-magerun2
