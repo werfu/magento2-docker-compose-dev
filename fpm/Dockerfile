@@ -37,3 +37,4 @@ RUN chown www-data:www-data /var/www/html
 RUN apt-get install -y mariadb-client
 RUN curl https://files.magerun.net/n98-magerun2.phar -o /usr/local/bin/n98-magerun2
 RUN chmod +x /usr/local/bin/n98-magerun2
+USER www-data:www-data
