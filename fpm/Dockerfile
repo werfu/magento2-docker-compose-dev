@@ -1,5 +1,4 @@
 FROM php:7.1-fpm
-COPY customized.ini /usr/local/etc/php/conf.d/customized.ini
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
@@ -20,7 +19,8 @@ RUN docker-php-ext-install -j$(nproc) mcrypt
 RUN docker-php-ext-install -j$(nproc) curl 
 RUN docker-php-ext-install -j$(nproc) dom 
 RUN docker-php-ext-install -j$(nproc) hash 
-RUN docker-php-ext-install -j$(nproc) pdo pdo_mysql 
+RUN docker-php-ext-install -j$(nproc) pdo pdo_mysql
+RUN docker-php-ext-install -j$(nproc) mysqli 
 RUN docker-php-ext-install -j$(nproc) simplexml 
 RUN docker-php-ext-install -j$(nproc) xml 
 RUN docker-php-ext-install -j$(nproc) soap
@@ -37,4 +37,5 @@ RUN chown www-data:www-data /var/www/html
 RUN apt-get install -y mariadb-client
 RUN curl https://files.magerun.net/n98-magerun2.phar -o /usr/local/bin/n98-magerun2
 RUN chmod +x /usr/local/bin/n98-magerun2
+RUN docker-php-ext-install -j$(nproc) opcache
 USER www-data:www-data
