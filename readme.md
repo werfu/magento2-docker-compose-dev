@@ -1,14 +1,14 @@
 # Magento 2 development Docker-compose scaffold
-This repo hold a docker-compose base configuration for Magento 2. It's based upon stock PHP-FPM, MySQL and Nginx image, and use minimal customization to these by using configuration injection. Only the FPM image is customized to install required PHP extensions. This is only for development purpose. It provide PHPMyAdmin and Mailcatcher as conveniance.  It's also unsafe, password are weaks and you will face problems if you try to use it in production. DO NO USE FOR LIVE SITE.
+This repo hold a docker-compose base configuration for Magento 2. It's based upon MariDB stock image, nmarus/nginx-full image, stock PHP FPM 7.1 image , and use minimal customization to these by using configuration injection. Only the FPM image is customized to install required PHP extensions. This is only for development purpose. It provide PHPMyAdmin and Mailcatcher as conveniance.  It's also unsafe, password are weaks and you will face problems if you try to use it in production. DO NO USE FOR LIVE SITE.
 
 ## Why use this instead of using (insert the of name your prefered Magento docker image here)
 Most Magento Docker image are monolytic or at most using an external MySQL server. This may be great if you don't need to tailor the configuration often or like to rebuild image, but I prefer to be able to tweak things easily while at the same time rely on the thinest images possible. As such, it's quite easy to switch images version, add Varnish or Pound support or add a Solar server, without having to customize a Dockerfile. Docker-compose is a simpler, more elegant solution. Use it!
 
 ## Features
-* Latest Nginx
+* Nginx full from nmarus/nginx-full
 * MariaDB 10
 * PHP-FPM 7.1 with the following extensions:
-	* XDebug
+	* XDebug (disable in the customized.ini file)
 	* bc-math
 	* gd (with freetype and jpeg support)
 	* iconv
@@ -20,9 +20,11 @@ Most Magento Docker image are monolytic or at most using an external MySQL serve
 	* pdo_mysql
 	* simplexml
 	* soap
+	* opcache
 * Redis: A fast key-value store. Configured as a memory online store for now, but support for dump on shutdown could be added easily.
 * PHPMyAdmin: PHPMyAdmin is configured to allow remote connection. Use the database credentials in the following section to log onto the db server. 
 * MailCatcher: Mailcatcher is a fake SMTP service which catch all mail going through and allow you to read them in a web interface. Pretty usefull to debug mail template and suchs.
+* ElasticSearch: Poppular searche engine to use with third party search plugins
 
 ## Services structure
 Docker-compose use service name as hostname. You will need those while configuring
@@ -44,12 +46,12 @@ The MySQL database configuration are passed to the MySQL instance as environment
 The .gitmodules file is in .gitignore. As such, unless you personalize the configuration, you should be able to simply clone this repo, add your code repo as a submodule (the www folder), and still be able to pull update from this repo without a hitch.
 
 ## Configuration customization
-* Nginx default site configuration is exposed in conf/site.conf. The configuration is straightfowared, with basic rewrites and no security at all.
+* Nginx virtual hosts configuration should be placed inside conf/nginx.conf.d/. You can reference fastcgi_backend upstream server to pass PHP scripts to PHP-FPM. 
 * PHP configuration can be tailored by editing the fpm/custom.ini.
 * FPM pool configuration is not exposed (no need for now).
 
 ## PHP Debugging
-Xdebug extension configuration is exposed in conf/xdebug.conf. By default the remote port is set to 9009 and the remote handler to dbgp. The connect_back option is enable, so ensure your IDE is allowing it.
+Xdebug extension configuration is exposed in conf/xdebug.conf. By default xdebug is disable, the remote port is set to 9009 and the remote handler to dbgp. The connect_back option is enable, so ensure your IDE is allowing it.
 
 ## Adding further features
 More PHP extensions can be added by customizing the dockerfile inside the FPM folder. Simply rebuild the FPM image after by running docker-compose up --build.
