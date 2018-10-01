@@ -2,3 +2,4 @@ db/init/*.sql
 .gitmodules
 .vscode
 www*
+conf/certs/wildcard*
