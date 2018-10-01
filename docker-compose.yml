@@ -31,7 +31,10 @@ services:
       - mailcatcher
       - db
       - elasticsearch
-      - varnish
+    networks:
+      main:
+        aliases:
+          - fpm
     build: ./fpm
     restart: always 
     volumes:
@@ -43,6 +46,10 @@ services:
       - db
       - redis
       - fpm
+    networks:
+      main:
+        aliases:
+          - nginx
     image: nmarus/nginx-full
     volumes:
       - "./conf/nginx.conf:/etc/nginx/nginx.conf"
@@ -53,9 +60,16 @@ services:
     ports:
       - "8080:80"
       - "443:443"
+      
 
   varnish:
     image: eeacms/varnish
+    depends_on:
+      - nginx
+    networks:
+      main:
+        aliases:
+          - varnish 
     ports:
       - "80:6081"
       - "6085:6085"
@@ -77,7 +91,7 @@ services:
     environment:
      - PMA_ARBITRARY=1
     ports:
-     - 8080:80
+     - 8888:80
     volumes:
      - /sessions
 
@@ -85,3 +99,6 @@ services:
     image: elasticsearch
     environment:
       - discovery.type=single-node
+
+networks:
+  main:
