@@ -3,3 +3,4 @@ db/init/*.sql
 .vscode
 www*
 conf/certs/wildcard*
+conf/varnish/*

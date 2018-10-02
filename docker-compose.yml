@@ -2,6 +2,10 @@ version: '2'
 services:
   db:
     image: mariadb:latest
+    networks:
+      main:
+        aliases:
+          - db     
     volumes:
       - "/var/lib/mysql"
       - "./db/init:/docker-entrypoint-initdb.d"
@@ -19,6 +23,10 @@ services:
       - "6379:6379"
     volumes:
       - ./conf/redis.conf:/usr/local/etc/redis/redis.conf        
+    networks:
+      main:
+        aliases:
+          - redis       
 
   mailcatcher:
     image: yappabe/mailcatcher
@@ -40,11 +48,9 @@ services:
     volumes:
       - "./www:/var/www/html"
       - "./www2/wordpress:/var/www2/html"
-      - "./fpm/customized.ini:/usr/local/etc/php/conf.d/customized.ini"
+      - "./fpm/customized.ini:/usr/local/etc/php/conf.d/customized.ini"      
   nginx:
     depends_on:
-      - db
-      - redis
       - fpm
     networks:
       main:
@@ -61,7 +67,6 @@ services:
       - "8080:80"
       - "443:443"
       
-
   varnish:
     image: eeacms/varnish
     depends_on:
@@ -73,6 +78,8 @@ services:
     ports:
       - "80:6081"
       - "6085:6085"
+    volumes:
+      - "./conf/varnish.vcl:/etc/varnish/conf.d/varnish.vcl"
     environment:
       BACKENDS: "nginx"
       BACKENDS_PORT: "8080"
@@ -99,6 +106,10 @@ services:
     image: elasticsearch
     environment:
       - discovery.type=single-node
+    networks:
+      main:
+        aliases:
+          - elasticsearch
 
 networks:
   main:
