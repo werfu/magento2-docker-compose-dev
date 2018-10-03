@@ -1,0 +1,4 @@
+#!/bin/bash
+# From https://gist.github.com/scottvrosenthal/5691305
+openssl genrsa 2048 > conf/certs/www.key
+openssl req -new -x509 -nodes -sha1 -days 3650 -key conf/certs/www.key > conf/certs/www.crt
