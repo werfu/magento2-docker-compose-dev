@@ -1,0 +1,4 @@
+[submodule "www"]
+	path = www
+	url = git@github.com:Shopistry/magento2.git
+	branch = cleanup
