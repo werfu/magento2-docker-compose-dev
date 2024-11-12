@@ -38,7 +38,8 @@ services:
     depends_on:
       - mailcatcher
       - db
-      - elasticsearch
+      - opensearch
+      - rabbitmq
     # networks:
     #   main:
     #     aliases:
@@ -47,7 +48,6 @@ services:
     restart: always 
     volumes:
       - "./www:/var/www/html"
-      - "./www2/wordpress:/var/www2/html"
       - "./fpm/customized.ini:/usr/local/etc/php/conf.d/customized.ini"      
   http:
     depends_on:
@@ -61,7 +61,6 @@ services:
       - "./conf/http/nginx.conf:/etc/nginx/nginx.conf"
       - "./conf/http/conf.d:/etc/nginx/conf.d"
       - "./www:/var/www/html"
-      - "./www2/wordpress:/var/www2/html"
     ports:
       - "8080:80"
 
@@ -82,7 +81,7 @@ services:
       - "./conf/certs:/etc/nginx/ssl"
 
   varnish:
-    image: eeacms/varnish
+    image: varnish:latest
     depends_on:
       - http
     # networks:
@@ -116,14 +115,33 @@ services:
     volumes:
      - /sessions
 
-  elasticsearch:
-    image: elasticsearch
+  opensearch:
+    image: opensearchproject/opensearch:2.12.0
     environment:
       - discovery.type=single-node
+      - bootstrap.memory_lock=true # Disable JVM heap memory swapping
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # Set min and max JVM heap sizes to at least 50% of system RAM      
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=j6Zv15K0Tu1j
+    ulimits:
+      memlock:
+        soft: -1 # Set memlock to unlimited (no soft or hard limit)
+        hard: -1
+      nofile:
+        soft: 65536 # Maximum number of open files for the opensearch user - set to at least 65536
+        hard: 65536      
+    ports:
+      - 9200:9200 # REST API
+      - 9600:9600 # Performance Analyzer      
     # networks:
     #   main:
     #     aliases:
     #       - elasticsearch
+  
+  rabbitmq:
+    image: rabbitmq:3.13
+    ports:
+      - 5672:5672
+      - 15672:15672
 
 # networks:
 #   main:

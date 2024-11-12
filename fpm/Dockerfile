@@ -19,27 +19,27 @@ RUN docker-php-ext-install -j$(nproc) curl
 RUN docker-php-ext-install -j$(nproc) dom
 RUN docker-php-ext-install -j$(nproc) fileinfo
 RUN docker-php-ext-install -j$(nproc) filter
-RUN docker-php-ext-install -j$(nproc) hash
-RUN docker-php-ext-install -j$(nproc) iconv
+# RUN docker-php-ext-install -j$(nproc) hash
+# RUN docker-php-ext-install -j$(nproc) iconv
 RUN docker-php-ext-install -j$(nproc) intl
-RUN docker-php-ext-install -j$(nproc) json
-RUN docker-php-ext-install -j$(nproc) libxml
-RUN docker-php-ext-install -j$(nproc) mbstring
-RUN docker-php-ext-install -j$(nproc) openssl
-RUN docker-php-ext-install -j$(nproc) pcre
+# RUN docker-php-ext-install -j$(nproc) json
+# RUN docker-php-ext-install -j$(nproc) libxml
+# RUN docker-php-ext-install -j$(nproc) mbstring
+# RUN docker-php-ext-install -j$(nproc) openssl
+# RUN docker-php-ext-install -j$(nproc) pcre
 RUN docker-php-ext-install -j$(nproc) pdo_mysql
-RUN docker-php-ext-install -j$(nproc) simplexml
+# RUN docker-php-ext-install -j$(nproc) simplexml
 RUN docker-php-ext-install -j$(nproc) soap
 RUN docker-php-ext-install -j$(nproc) sockets
-RUN docker-php-ext-install -j$(nproc) sodium
-RUN docker-php-ext-install -j$(nproc) spl
-RUN docker-php-ext-install -j$(nproc) tokenizer
-RUN docker-php-ext-install -j$(nproc) xmlwriter
+# RUN docker-php-ext-install -j$(nproc) sodium
+# RUN docker-php-ext-install -j$(nproc) spl
+# RUN docker-php-ext-install -j$(nproc) tokenizer
+# RUN docker-php-ext-install -j$(nproc) xmlwriter
 RUN docker-php-ext-install -j$(nproc) xsl
 RUN docker-php-ext-install -j$(nproc) zip
-RUN docker-php-ext-install -j$(nproc) zlib
+# RUN docker-php-ext-install -j$(nproc) zlib
 
-RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install -j$(nproc) gd
 RUN pecl install redis
 RUN pecl install xdebug
